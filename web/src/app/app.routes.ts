@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
-
+ 
 import { auditUserGuard } from './core/audit-user.guard';
-
+ 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   {
@@ -20,30 +20,46 @@ export const routes: Routes = [
           import('./features/usuarios/usuario-list').then((m) => m.UsuarioListComponent),
       },
       {
-        path: 'categorias',
+        path: 'autores',
         loadComponent: () =>
-          import('./features/categorias/categoria-list').then((m) => m.CategoriaListComponent),
+          import('./features/autores/autor-list').then((m) => m.AutorListComponent),
       },
       {
-        path: 'productos',
+        path: 'materiales-biblioteca',
         loadComponent: () =>
-          import('./features/productos/producto-list').then((m) => m.ProductoListComponent),
-      },
-      {
-        path: 'pedidos',
-        loadComponent: () =>
-          import('./features/pedidos/pedido-list').then((m) => m.PedidoListComponent),
-      },
-      {
-        path: 'detalles-pedido',
-        loadComponent: () =>
-          import('./features/detalles-pedido/detalle-pedido-list').then(
-            (m) => m.DetallePedidoListComponent,
+          import('./features/materiales-biblioteca/material-biblioteca-list').then(
+            (m) => m.MaterialBibliotecaListComponent,
           ),
       },
       {
-        path: 'pagos',
-        loadComponent: () => import('./features/pagos/pago-list').then((m) => m.PagoListComponent),
+        path: 'libros',
+        loadComponent: () =>
+          import('./features/libros/libro-list').then((m) => m.LibroListComponent),
+      },
+      {
+        path: 'revistas',
+        loadComponent: () =>
+          import('./features/revistas/revista-list').then((m) => m.RevistaListComponent),
+      },
+      {
+        path: 'periodicos',
+        loadComponent: () =>
+          import('./features/periodicos/periodico-list').then((m) => m.PeriodicoListComponent),
+      },
+      {
+        path: 'prestamos',
+        loadComponent: () =>
+          import('./features/prestamos/prestamo-list').then((m) => m.PrestamoListComponent),
+      },
+      {
+        path: 'reservas',
+        loadComponent: () =>
+          import('./features/reservas/reserva-list').then((m) => m.ReservaListComponent),
+      },
+      {
+        path: 'sanciones',
+        loadComponent: () =>
+          import('./features/sanciones/sancion-list').then((m) => m.SancionListComponent),
       },
     ],
   },
