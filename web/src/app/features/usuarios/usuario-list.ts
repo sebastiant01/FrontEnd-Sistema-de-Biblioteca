@@ -12,7 +12,6 @@ import { filter } from 'rxjs/operators';
 import { UsuarioService } from '../../core/services/usuario.service';
 import { UsuarioRead } from '../../models/usuario.models';
 import { UsuarioDialogComponent, UsuarioDialogData } from './usuario-dialog';
-import { config } from 'rxjs';
 
 @Component({
     selector: 'app-usuario-list',
