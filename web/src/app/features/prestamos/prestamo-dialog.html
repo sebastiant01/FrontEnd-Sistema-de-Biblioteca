@@ -1,0 +1,41 @@
+<h2 mat-dialog-title>{{ data.mode === 'create' ? 'Nuevo préstamo' : 'Editar préstamo' }}</h2>
+<mat-dialog-content class="dialog-body">
+@if (data.mode === 'create'){
+  <form [formGroup]="createForm" class="grid">
+    <mat-form-field appearance="outline">
+      <mat-label>ID del Usuario</mat-label>
+      <input matInput formControlName="id_usuario" placeholder="Ej: 7a76a318-c05f-4dcf-b645-e31140c5a987" />
+        @if (createForm.get('id_usuario')?.hasError('required') && createForm.get('id_usuario')?.touched) {
+          <mat-error>El usuario es obligatorio</mat-error>
+        }
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>ID del Material</mat-label>
+      <input matInput formControlName="id_material" placeholder="Ej: 086e0f73-cd87-490f-865c-1c987c2ebe65" />
+        @if (createForm.get('id_material')?.hasError('required') && createForm.get('id_material')?.touched) {
+          <mat-error>El material es obligatorio</mat-error>
+        }
+    </mat-form-field>
+  </form>
+} @else {
+  <form [formGroup]="editForm" class="grid">
+    <mat-form-field appearance="outline" class="span-2">
+      <mat-label>Estado del Préstamo</mat-label>
+        <mat-select formControlName="estado"></mat-select>
+            @for (e of estados; track e) {
+                <mat-option [value]="e">{{ e }}</mat-option>
+            }
+        </mat-select>
+
+        @if (editForm.get('estado')?.hasError('required') && editForm.get('estado')?.touched) {
+          <mat-error>Debes seleccionar un estado</mat-error>
+        }
+        
+    </mat-form-field>
+  </form>
+}
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button type="button" (click)="cancel()">Cancelar</button>
+  <button mat-flat-button color="primary" type="button" (click)="save()">Guardar</button>
+</mat-dialog-actions>
