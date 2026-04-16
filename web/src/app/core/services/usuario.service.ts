@@ -12,13 +12,13 @@ export class UsuarioService {
     constructor(private readonly http: HttpClient) {}
 
     list(): Observable<UsuarioRead[]> {
-        const params = new HttpParams().set('skip', 0).set('limit', 500);
+        const params = new HttpParams().set('skip', 0).set('limit', 300);
         return this.http.get<UsuarioRead[]>(`${this.base}/`, { params });
     }
 
     search(termino: string): Observable<UsuarioRead[]> {
-        const params = new HttpParams().set('skip', 0).set('limit', 500);
-        return this.http.get<UsuarioRead[]>(`${this.base}/buscar?q=${termino}`);
+        const params = new HttpParams().set('skip', 0).set('limit', 300);
+        return this.http.get<UsuarioRead[]>(`${this.base}/buscar?q=${termino}`, { params });
     }
 
     getById(id: string): Observable<UsuarioRead> {
@@ -26,19 +26,19 @@ export class UsuarioService {
     }
     
     getByUsername(username: string): Observable<UsuarioRead> {
-        return this.http.get<UsuarioRead>(`${this.base}/${username}`);
+        return this.http.get<UsuarioRead>(`${this.base}/username/${username}`);
     }
 
     getByEmail(email: string): Observable<UsuarioRead> {
-        return this.http.get<UsuarioRead>(`${this.base}/${email}`);
+        return this.http.get<UsuarioRead>(`${this.base}/email/${email}`);
     }
 
     getByDni(documento: string): Observable<UsuarioRead> {
-        return this.http.get<UsuarioRead>(`${this.base}/${documento}`);
+        return this.http.get<UsuarioRead>(`${this.base}/documento/${documento}`);
     }
 
     getByPhone(telefono: string): Observable<UsuarioRead> {
-        return this.http.get<UsuarioRead>(`${this.base}/${telefono}`);
+        return this.http.get<UsuarioRead>(`${this.base}/telefono/${telefono}`);
     }
 
     create(body: UsuarioCreate): Observable<UsuarioRead> {
