@@ -1,0 +1,24 @@
+<h2 mat-dialog-title>{{ data.mode === 'create' ? 'Nuevo usuario' : 'Editar usuario' }}</h2>
+<mat-dialog-content class="dialog-body">
+  <form [formGroup]="form" class="grid">
+    <mat-form-field appearance="outline" class="span-2">
+      <mat-label>Nombre del autor</mat-label>
+      <input matInput formControlName="nombre" />
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="span-2">
+      <mat-label>Apellido del autor</mat-label>
+      <input matInput formControlName="apellido" />
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="span-2">
+      <mat-label>Nacionalidad del autor</mat-label>
+      <input matInput formControlName="documento" />
+    </mat-form-field>
+    <mat-checkbox formControlName="activo" color="primary">
+        El autor está activo
+    </mat-checkbox>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button type="button" (click)="cancel()">Cancelar</button>
+  <button mat-flat-button color="primary" type="button" (click)="save()">Guardar</button>
+</mat-dialog-actions>

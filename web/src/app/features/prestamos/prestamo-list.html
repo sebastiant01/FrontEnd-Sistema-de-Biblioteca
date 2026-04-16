@@ -1,0 +1,68 @@
+<div class="page-head">
+  <h1>Préstamos</h1>
+  <button mat-flat-button color="primary" type="button" (click)="nuevo()">
+    <mat-icon>add</mat-icon>
+    Nuevo
+  </button>
+</div>
+
+@if (loading) {
+  <div class="loading">
+    <mat-spinner />
+  </div>
+} @else {
+  <div class="table-wrap mat-elevation-z2">
+    <table mat-table [dataSource]="dataSource">
+      <ng-container matColumnDef="id_prestamo">
+        <th mat-header-cell *matHeaderCellDef>ID Préstamo</th>
+        <td mat-cell *matCellDef="let r">{{ r.id_prestamo }}</td>
+      </ng-container>
+      <ng-container matColumnDef="id_usuario">
+        <th mat-header-cell *matHeaderCellDef>ID Usuario</th>
+        <td mat-cell *matCellDef="let r">{{ r.id_usuario }}</td>
+      </ng-container>
+      <ng-container matColumnDef="id_material">
+        <th mat-header-cell *matHeaderCellDef>ID Material</th>
+        <td mat-cell *matCellDef="let r">{{ r.id_material }}</td>
+      </ng-container>
+      <ng-container matColumnDef="fecha_prestamo">
+        <th mat-header-cell *matHeaderCellDef>Fecha del Préstamo</th>
+        <td mat-cell *matCellDef="let r">{{ r.fecha_prestamo }}</td>
+      </ng-container>
+      <ng-container matColumnDef="estado">
+        <th mat-header-cell *matHeaderCellDef>Estado del Préstamo</th>
+        <td mat-cell *matCellDef="let r">{{ r.estado }}</td>
+      </ng-container>
+      <ng-container matColumnDef="id_usuario_crea">
+        <th mat-header-cell *matHeaderCellDef>Id usuario crea</th>
+        <td mat-cell *matCellDef="let r">{{ r.id_usuario_crea }}</td>
+      </ng-container>
+      <ng-container matColumnDef="id_usuario_edita">
+        <th mat-header-cell *matHeaderCellDef>Id usuario edita</th>
+        <td mat-cell *matCellDef="let r">{{ r.id_usuario_edita }}</td>
+      </ng-container>
+      <ng-container matColumnDef="fecha_creacion">
+        <th mat-header-cell *matHeaderCellDef>Fecha creación</th>
+        <td mat-cell *matCellDef="let r">{{ r.fecha_creacion }}</td>
+      </ng-container>
+      <ng-container matColumnDef="fecha_edicion">
+        <th mat-header-cell *matHeaderCellDef>Fecha edición</th>
+        <td mat-cell *matCellDef="let r">{{ r.fecha_edicion }}</td>
+      </ng-container>
+      <ng-container matColumnDef="acciones">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let r" class="actions">
+          <button mat-icon-button type="button" (click)="editar(r)" aria-label="Editar">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button type="button" (click)="eliminar(r)" aria-label="Eliminar">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+    <mat-paginator [pageSizeOptions]="[5, 10, 25]" showFirstLastButtons />
+  </div>
+}
