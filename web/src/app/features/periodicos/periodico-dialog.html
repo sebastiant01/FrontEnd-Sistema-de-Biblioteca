@@ -1,0 +1,55 @@
+<h2 mat-dialog-title>{{ data.mode === 'create' ? 'Nuevo Periódico' : 'Editar Periódico' }}</h2>
+
+<mat-dialog-content class="dialog-body">
+  <form [formGroup]="form" class="grid">
+    
+    <mat-form-field appearance="outline" class="span-2">
+      <mat-label>Título del periódico</mat-label>
+      <input matInput formControlName="titulo_material" placeholder="Ej. El Tiempo" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Código de material</mat-label>
+      <input matInput formControlName="codigo_material" placeholder="Ej. PER-001" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Ciudad de publicación</mat-label>
+      <input matInput formControlName="ciudad_publicacion" placeholder="Ej. Bogotá" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Sección</mat-label>
+      <input matInput formControlName="seccion_periodico" placeholder="Ej. Política" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Fecha de edición</mat-label>
+      <input matInput type="date" formControlName="fecha_material" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="span-2">
+      <mat-label>ID del Autor (UUID)</mat-label>
+      <input matInput formControlName="id_autor" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="span-2">
+      <mat-label>Descripción / Observaciones</mat-label>
+      <textarea matInput formControlName="descripcion_material" rows="3"></textarea>
+    </mat-form-field>
+
+    <div class="span-2" style="padding: 10px 0;">
+      <mat-checkbox formControlName="disponibilidad_material">
+        Disponible para consulta
+      </mat-checkbox>
+    </div>
+
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button type="button" (click)="cancel()">Cancelar</button>
+  <button mat-flat-button color="primary" type="button" [disabled]="form.invalid" (click)="save()">
+    Guardar
+  </button>
+</mat-dialog-actions>
