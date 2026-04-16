@@ -15,7 +15,7 @@ export interface AutorCreate {
     apellido_autor?: string | null;
     nacionalidad: string;
     activo: boolean;
-    id_usuario_screa: string;
+    id_usuario_crea: string;
 }
 
 export interface AutorUpdate {
