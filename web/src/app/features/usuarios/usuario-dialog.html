@@ -1,11 +1,11 @@
 <h2 mat-dialog-title>{{ data.mode === 'create' ? 'Nuevo usuario' : 'Editar usuario' }}</h2>
 <mat-dialog-content class="dialog-body">
   <form [formGroup]="form" class="grid">
-    <mat-form-field appearance="outline">
+    <mat-form-field appearance="outline" class="span-2">
       <mat-label>Nombre</mat-label>
       <input matInput formControlName="nombre" />
     </mat-form-field>
-    <mat-form-field appearance="outline">
+    <mat-form-field appearance="outline" class="span-2">
       <mat-label>Apellido</mat-label>
       <input matInput formControlName="apellido" />
     </mat-form-field>
