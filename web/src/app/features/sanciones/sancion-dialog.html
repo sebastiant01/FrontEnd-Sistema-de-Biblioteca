@@ -1,0 +1,29 @@
+<h2 mat-dialog-title>{{ data.mode === 'create' ? 'Nueva sanción' : 'Editar sanción' }}</h2>
+<mat-dialog-content class="dialog-body">
+  <form [formGroup]="form" class="grid">
+    <mat-form-field appearance="outline" class="span-2">
+      <mat-label>ID Usuario</mat-label>
+      <input matInput formControlName="id_usuario" />
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="span-2">
+      <mat-label>ID Préstamo</mat-label>
+      <input matInput formControlName="id_prestamo" />
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="span-2">
+      <mat-label>Fecha de inicio</mat-label>
+      <input matInput type="date" formControlName="fecha_inicio" />
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="span-2">
+      <mat-label>Días de sanción</mat-label>
+      <input matInput type="number" formControlName="dias_sancion" />
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="span-2">
+      <mat-label>Motivo</mat-label>
+      <input matInput formControlName="motivo" />
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button type="button" (click)="cancel()">Cancelar</button>
+  <button mat-flat-button color="primary" type="button" (click)="save()">Guardar</button>
+</mat-dialog-actions>
