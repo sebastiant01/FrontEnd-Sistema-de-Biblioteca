@@ -25,7 +25,6 @@ export interface RevistaUpdate {
 
 export interface RevistaRead {
   id_revista: string;
-  id_material: string;
   id_autor: string;
   codigo_material: string;
   titulo_material: string;
