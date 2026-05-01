@@ -25,13 +25,6 @@ export const routes: Routes = [
           import('./features/autores/autor-list').then((m) => m.AutorListComponent),
       },
       {
-        path: 'materiales-biblioteca',
-        loadComponent: () =>
-          import('./features/materiales-biblioteca/material-biblioteca-list').then(
-            (m) => m.MaterialBibliotecaListComponent,
-          ),
-      },
-      {
         path: 'libros',
         loadComponent: () =>
           import('./features/libros/libro-list').then((m) => m.LibroListComponent),
