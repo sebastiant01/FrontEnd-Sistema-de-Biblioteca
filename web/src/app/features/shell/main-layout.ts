@@ -20,7 +20,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
  
 import { AuditContextService } from '../../core/audit-context.service';
 import { UsuarioService } from '../../core/services/usuario.service';
-import { UsuarioRead } from '../../models/api.models';
+import { UsuarioRead } from '../../models/usuario.models';
  
 const SIDEBAR_KEY = 'shell_sidebar_collapsed';
  
