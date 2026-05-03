@@ -13,7 +13,7 @@ export class AutorService {
 
     list(): Observable<AutorRead[]> {
         const params = new HttpParams().set('skip', 0).set('limit', 250);
-        return this.http.get<AutorRead[]>(`${this.base}/`, { params });
+        return this.http.get<AutorRead[]>(`${this.base}`, { params });
     }
     
     search(termino: string): Observable<AutorRead[]> {
@@ -26,7 +26,7 @@ export class AutorService {
     }
 
     create(body: AutorCreate): Observable<AutorRead> {
-        return this.http.post<AutorRead>(`${this.base}/`, body);
+        return this.http.post<AutorRead>(`${this.base}`, body);
     }
 
     update(id: string, body: AutorUpdate): Observable<AutorRead> {

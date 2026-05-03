@@ -13,7 +13,7 @@ export class UsuarioService {
 
     list(): Observable<UsuarioRead[]> {
         const params = new HttpParams().set('skip', 0).set('limit', 300);
-        return this.http.get<UsuarioRead[]>(`${this.base}/`, { params });
+        return this.http.get<UsuarioRead[]>(`${this.base}`, { params });
     }
 
     search(termino: string): Observable<UsuarioRead[]> {
@@ -42,7 +42,7 @@ export class UsuarioService {
     }
 
     create(body: UsuarioCreate): Observable<UsuarioRead> {
-        return this.http.post<UsuarioRead>(`${this.base}/`, body);
+        return this.http.post<UsuarioRead>(`${this.base}`, body);
     }
 
     update(id: string, body: UsuarioUpdate): Observable<UsuarioRead> {
@@ -51,5 +51,12 @@ export class UsuarioService {
 
     delete(id: string): Observable <void> {
         return this.http.delete(`${this.base}/${id}`, { observe: 'response' }).pipe(map(() => undefined));
+    }
+
+    login(credenciales: { username: string, contrasena: string}) {
+        return this.http.post<{ status: string, message: string, id_usuario: string, nombre: string, apellido: string, username: string, rol: string }>(
+            `${this.base}/login`,
+            credenciales
+        );
     }
 }
