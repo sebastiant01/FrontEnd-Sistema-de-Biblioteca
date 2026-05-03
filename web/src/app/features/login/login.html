@@ -1,18 +1,23 @@
 <div class="login-page">
   <mat-card class="login-card" appearance="outlined">
+    
     <mat-card-header>
-      <mat-card-title>Iniciar sesión</mat-card-title>
+      <mat-card-title>{{ mostrarRegistro ? 'Crear cuenta' : 'Iniciar sesión' }}</mat-card-title>
       <mat-card-subtitle>
-        Acceso de demostración: la clave no se comprueba con el servidor; solo debe existir el usuario en el API.
+        Acceso al sistema. Ingresa tus credenciales para continuar.
       </mat-card-subtitle>
     </mat-card-header>
+
     <mat-card-content>
       @if (loading()) {
         <div class="center">
           <mat-spinner diameter="40" />
         </div>
-      } @else if (usuarios().length === 0) {
-        <p class="hint">No hay usuarios en la base. Crea el primero (será el que usarás para entrar después).</p>
+      } 
+      @else if (mostrarRegistro) {
+        <p class="hint">Llena tus datos para registrarte en el sistema.</p>
+        
+        <!-- Tu formulario de registro que me dijiste que ya estaba melo -->
         <form [formGroup]="firstUserForm" (ngSubmit)="crearPrimero()" class="form-grid">
           <mat-form-field appearance="outline">
             <mat-label>Nombre</mat-label>
@@ -42,20 +47,29 @@
             <button mat-flat-button color="primary" type="submit">Crear y entrar</button>
           </div>
         </form>
+
       } @else {
         <form [formGroup]="loginForm" (ngSubmit)="ingresar()" class="login-form">
           <mat-form-field appearance="outline" class="full">
-            <mat-label>Usuario</mat-label>
-            <input matInput formControlName="nombre_usuario" autocomplete="username" />
+            <mat-label>Username</mat-label>
+            <input matInput formControlName="username" autocomplete="username" />
           </mat-form-field>
+
           <mat-form-field appearance="outline" class="full">
             <mat-label>Contraseña</mat-label>
-            <input matInput type="password" formControlName="clave" autocomplete="current-password" />
-            <mat-hint>Por ahora es solo visual; no se valida contra el backend.</mat-hint>
+            <input matInput type="password" formControlName="contrasena" autocomplete="current-password" />
           </mat-form-field>
+
           <button mat-flat-button color="primary" type="submit" class="submit-btn">Ingresar</button>
         </form>
       }
     </mat-card-content>
+
+    <mat-card-actions style="margin-bottom: 1rem;">
+        <button mat-button type="button" (click)="mostrarRegistro = !mostrarRegistro">
+            {{ mostrarRegistro ? 'Ya tengo cuenta, iniciar sesión' : 'No tengo cuenta, registrarme' }}
+        </button>
+    </mat-card-actions>
+
   </mat-card>
 </div>

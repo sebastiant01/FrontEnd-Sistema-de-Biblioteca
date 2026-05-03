@@ -36,6 +36,7 @@ export class LoginComponent implements OnInit {
 
   readonly loading = signal(true);
   readonly usuarios = signal<UsuarioRead[]>([]);
+  mostrarRegistro = false;
 
   readonly loginForm = this.fb.nonNullable.group({
     username: ['', Validators.required],
