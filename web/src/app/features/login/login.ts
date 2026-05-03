@@ -74,19 +74,22 @@ export class LoginComponent implements OnInit {
         this.loginForm.markAllAsTouched();
         return;
     }
-    const { username } = this.loginForm.getRawValue();
-    const key = username.trim().toLowerCase();
-    const u = this.usuarios().find(
-        (x) => x.username.trim().toLowerCase() === key,
-    );
-    if (!u) {
-        this.snack.open('Usuario no encontrado. Revisa el nombre o crea un usuario en la base.', 'Cerrar', {
-            duration: 5000,
-        });
-        return;
-    }
-    this.audit.select(u.id_usuario);
-    void this.router.navigateByUrl('/app');
+    const { username, contrasena } = this.loginForm.getRawValue();
+
+    this.usuarioService.login({
+      username: username.trim(),
+      contrasena: contrasena
+    }).subscribe({
+      next: (response) => {
+        this.audit.select(response.id_usuario);
+
+        this.snack.open(`${response.message} ${response.nombre} ${response.apellido}`)
+
+        void this.router.navigateByUrl('/app');
+      },
+
+      error: (err: HttpErrorResponse) => this.snack.open(this.msg(err), 'Cerrar', { duration: 6000 }),
+    })
   }
 
   crearPrimero(): void {
