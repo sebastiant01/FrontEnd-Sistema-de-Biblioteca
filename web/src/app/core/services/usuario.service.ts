@@ -5,7 +5,7 @@ import { map, Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { UsuarioCreate, UsuarioRead, UsuarioUpdate } from '../../models/usuario.models';
 
-@Injectable({ providedIn: 'root'})
+@Injectable({ providedIn: 'root' })
 export class UsuarioService {
     private readonly base = `${environment.apiUrl}/usuarios`;
 
@@ -18,7 +18,7 @@ export class UsuarioService {
 
     search(termino: string): Observable<UsuarioRead[]> {
         const params = new HttpParams().set('skip', 0).set('limit', 300);
-        return this.http.get<UsuarioRead[]>(`${this.base}/buscar?q=${termino}`, { params });
+        return this.http.get<UsuarioRead[]>(`${this.base}/buscar`, { params });
     }
 
     getById(id: string): Observable<UsuarioRead> {
@@ -55,7 +55,7 @@ export class UsuarioService {
 
     login(credenciales: { username: string, contrasena: string}) {
         return this.http.post<{ status: string, message: string, id_usuario: string, nombre: string, apellido: string, username: string, rol: string }>(
-            `${this.base}/login`,
+            `${environment.apiUrl}/auth/login`,
             credenciales
         );
     }

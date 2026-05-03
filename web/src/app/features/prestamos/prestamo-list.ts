@@ -12,7 +12,6 @@ import { filter } from 'rxjs/operators';
 import { PrestamoService } from '../../core/services/prestamo.service';
 import { PrestamoRead } from '../../models/prestamo.models';
 import { PrestamoDialogComponent, PrestamoDialogData } from './prestamo-dialog';
-import { UsuarioDialogComponent } from '../usuarios/usuario-dialog';
 
 
 @Component({
@@ -35,10 +34,16 @@ export class PrestamoListComponent implements AfterViewInit {
     private readonly snack = inject(MatSnackBar);
 
     readonly displayedColumns = [
+        'id_prestamo',
         'id_usuario',
         'id_material',
-        'fecha_preatamo',
+        'fecha_prestamo',
         'estado',
+        'id_usuario_crea',
+        'id_usuario_edita',
+        'fecha_creacion',
+        'fecha_edicion',
+        'acciones',
     ];
     readonly dataSource = new MatTableDataSource<PrestamoRead>([]);
 
@@ -77,7 +82,7 @@ export class PrestamoListComponent implements AfterViewInit {
     }
 
     private openDialog(data: PrestamoDialogData): void {
-        this.dialog.open(UsuarioDialogComponent, {width: '520px' , data}).afterClosed()
+        this.dialog.open(PrestamoDialogComponent, {width: '520px' , data}).afterClosed()
         .pipe(filter(Boolean)).subscribe(() => this.reload());
     }
 

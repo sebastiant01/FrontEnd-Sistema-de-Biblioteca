@@ -13,6 +13,10 @@
 } @else {
   <div class="table-wrap mat-elevation-z2">
     <table mat-table [dataSource]="dataSource">
+      <ng-container matColumnDef="id_usuario">
+        <th mat-header-cell *matHeaderCellDef>ID Usuario</th>
+        <td mat-cell *matCellDef="let r">{{ r.id_usuario }}</td>
+      </ng-container>
       <ng-container matColumnDef="nombre">
         <th mat-header-cell *matHeaderCellDef>Nombre</th>
         <td mat-cell *matCellDef="let r">{{ r.nombre }}</td>
@@ -30,8 +34,12 @@
         <td mat-cell *matCellDef="let r">{{ r.email }}</td>
       </ng-container>
       <ng-container matColumnDef="telefono">
-        <th mat-header-cell *matHeaderCellDef>:Teléfono</th>
+        <th mat-header-cell *matHeaderCellDef>Teléfono</th>
         <td mat-cell *matCellDef="let r">{{ r.telefono }}</td>
+      </ng-container>
+      <ng-container matColumnDef="username">
+        <th mat-header-cell *matHeaderCellDef>Username</th>
+        <td mat-cell *matCellDef="let r">{{ r.username }}</td>
       </ng-container>
       <ng-container matColumnDef="rol">
         <th mat-header-cell *matHeaderCellDef>Rol</th>

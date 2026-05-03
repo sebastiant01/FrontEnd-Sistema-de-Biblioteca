@@ -18,7 +18,7 @@ export class AutorService {
     
     search(termino: string): Observable<AutorRead[]> {
         const params = new HttpParams().set('skip', 0).set('limit', 250);
-        return this.http.get<AutorRead[]>(`${this.base}/buscar?q=${termino}`, { params });
+        return this.http.get<AutorRead[]>(`${this.base}/buscar`, { params });
     }
 
     getById(id: string): Observable<AutorRead> {

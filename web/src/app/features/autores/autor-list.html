@@ -13,6 +13,10 @@
 } @else {
   <div class="table-wrap mat-elevation-z2">
     <table mat-table [dataSource]="dataSource">
+      <ng-container matColumnDef="id_autor">
+        <th mat-header-cell *matHeaderCellDef>ID Autor</th>
+        <td mat-cell *matCellDef="let r">{{ r.id_autor }}</td>
+      </ng-container>
       <ng-container matColumnDef="nombre_autor">
         <th mat-header-cell *matHeaderCellDef>Nombre del autor</th>
         <td mat-cell *matCellDef="let r">{{ r.nombre_autor }}</td>
@@ -21,20 +25,20 @@
         <th mat-header-cell *matHeaderCellDef>Apellido del autor</th>
         <td mat-cell *matCellDef="let r">{{ r.apellido_autor }}</td>
       </ng-container>
-      <ng-container matColumnDef="nacionalidad_autor">
+      <ng-container matColumnDef="nacionalidad">
         <th mat-header-cell *matHeaderCellDef>Nacionalidad del autor</th>
-        <td mat-cell *matCellDef="let r">{{ r.nacionalidad_aitpr }}</td>
+        <td mat-cell *matCellDef="let r">{{ r.nacionalidad }}</td>
       </ng-container>
       <ng-container matColumnDef="activo">
         <th mat-header-cell *matHeaderCellDef>Activo</th>
         <td mat-cell *matCellDef="let r">{{ r.activo }}</td>
       </ng-container>
       <ng-container matColumnDef="id_usuario_crea">
-        <th mat-header-cell *matHeaderCellDef>Id usuario crea</th>
+        <th mat-header-cell *matHeaderCellDef>ID usuario crea</th>
         <td mat-cell *matCellDef="let r">{{ r.id_usuario_crea }}</td>
       </ng-container>
       <ng-container matColumnDef="id_usuario_edita">
-        <th mat-header-cell *matHeaderCellDef>Id usuario edita</th>
+        <th mat-header-cell *matHeaderCellDef>ID usuario edita</th>
         <td mat-cell *matCellDef="let r">{{ r.id_usuario_edita }}</td>
       </ng-container>
       <ng-container matColumnDef="fecha_creacion">
