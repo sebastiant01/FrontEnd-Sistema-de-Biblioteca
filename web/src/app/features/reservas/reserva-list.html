@@ -13,14 +13,6 @@
 } @else {
   <div class="table-wrap mat-elevation-z2">
     <table mat-table [dataSource]="dataSource">
-      <ng-container matColumnDef="id_usuario">
-        <th mat-header-cell *matHeaderCellDef>ID Usuario</th>
-        <td mat-cell *matCellDef="let r">{{ r.id_usuario }}</td>
-      </ng-container>
-      <ng-container matColumnDef="id_material">
-        <th mat-header-cell *matHeaderCellDef>ID Material</th>
-        <td mat-cell *matCellDef="let r">{{ r.id_material }}</td>
-      </ng-container>
       <ng-container matColumnDef="fecha_reserva">
         <th mat-header-cell *matHeaderCellDef>Fecha reserva</th>
         <td mat-cell *matCellDef="let r">{{ r.fecha_reserva }}</td>
@@ -28,14 +20,6 @@
       <ng-container matColumnDef="estado_reserva">
         <th mat-header-cell *matHeaderCellDef>Estado</th>
         <td mat-cell *matCellDef="let r">{{ r.estado_reserva }}</td>
-      </ng-container>
-      <ng-container matColumnDef="id_usuario_crea">
-        <th mat-header-cell *matHeaderCellDef>ID usuario crea</th>
-        <td mat-cell *matCellDef="let r">{{ r.id_usuario_crea }}</td>
-      </ng-container>
-      <ng-container matColumnDef="id_usuario_edita">
-        <th mat-header-cell *matHeaderCellDef>ID usuario edita</th>
-        <td mat-cell *matCellDef="let r">{{ r.id_usuario_edita }}</td>
       </ng-container>
       <ng-container matColumnDef="fecha_creacion">
         <th mat-header-cell *matHeaderCellDef>Fecha creación</th>

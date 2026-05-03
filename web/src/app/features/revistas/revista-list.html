@@ -33,18 +33,6 @@
         <th mat-header-cell *matHeaderCellDef>Disponible</th>
         <td mat-cell *matCellDef="let r">{{ r.disponibilidad_material ? 'Sí' : 'No' }}</td>
       </ng-container>
-      <ng-container matColumnDef="id_autor">
-        <th mat-header-cell *matHeaderCellDef>ID Autor</th>
-        <td mat-cell *matCellDef="let r">{{ r.id_autor }}</td>
-      </ng-container>
-      <ng-container matColumnDef="id_usuario_crea">
-        <th mat-header-cell *matHeaderCellDef>ID usuario crea</th>
-        <td mat-cell *matCellDef="let r">{{ r.id_usuario_crea }}</td>
-      </ng-container>
-      <ng-container matColumnDef="id_usuario_edita">
-        <th mat-header-cell *matHeaderCellDef>ID usuario edita</th>
-        <td mat-cell *matCellDef="let r">{{ r.id_usuario_edita }}</td>
-      </ng-container>
       <ng-container matColumnDef="fecha_creacion">
         <th mat-header-cell *matHeaderCellDef>Fecha creación</th>
         <td mat-cell *matCellDef="let r">{{ r.fecha_creacion }}</td>
