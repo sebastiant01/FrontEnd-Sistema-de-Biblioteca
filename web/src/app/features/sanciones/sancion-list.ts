@@ -33,13 +33,9 @@ export class SancionListComponent implements AfterViewInit {
   private readonly snack = inject(MatSnackBar);
  
   readonly displayedColumns = [
-    'id_usuario',
-    'id_prestamo',
     'fecha_inicio',
     'dias_sancion',
     'motivo',
-    'id_usuario_crea',
-    'id_usuario_edita',
     'fecha_creacion',
     'fecha_edicion',
     'acciones',
