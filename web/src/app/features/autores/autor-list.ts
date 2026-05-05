@@ -16,6 +16,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { AutorService } from '../../core/services/autor.service';
 import { AutorRead } from '../../models/autor.models';
 import { AutorDialogComponent, AutorDialogData } from './autor-dialog';
+import { AuditContextService } from '../../core/audit-context.service';
 
 @Component({
     selector: 'app-autor-list',
@@ -40,6 +41,7 @@ export class AutorListComponent implements AfterViewInit {
     private readonly dialog = inject(MatDialog);
     private readonly snack = inject(MatSnackBar);
     private readonly fb = inject(FormBuilder);
+    private readonly audit = inject(AuditContextService)
 
     readonly filterForm = this.fb.nonNullable.group({
         criterio: ['termino'],
@@ -125,7 +127,9 @@ export class AutorListComponent implements AfterViewInit {
 
     eliminar(row: AutorRead): void {
         if (!confirm(`Eliminar autor ${row.nombre_autor} ${row.apellido_autor}?`)) return;
-        this.autorService.delete(row.id_autor).subscribe({
+
+        const id_usuario_edita = this.audit.usuarioId()!
+        this.autorService.delete(row.id_autor, id_usuario_edita).subscribe({
             next: () => {
                 this.snack.open('Autor eliminado', 'OK', { duration: 3000 });
                 this.reload();

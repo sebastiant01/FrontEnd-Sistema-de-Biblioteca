@@ -128,7 +128,7 @@ export class PrestamoListComponent implements AfterViewInit {
 
     eliminar(row: PrestamoRead): void {
         if (!confirm(`Eliminar préstamo ${row.id_prestamo}?`)) return;
-        this.prestamoService.delete(row.id_material).subscribe({
+        this.prestamoService.delete(row.id_prestamo).subscribe({
             next: () => {
                 this.snack.open('Préstamo eliminado UnU', 'OK', {duration: 3000});
                 this.reload();

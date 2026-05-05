@@ -49,7 +49,9 @@ export class AutorService {
         return this.http.put<AutorRead>(`${this.base}/${id}`, body);
     }
 
-    delete(id: string): Observable <void> {
-        return this.http.delete(`${this.base}/${id}`, { observe: 'response' }).pipe(map(() => undefined));
+    delete(idAutor: string, idUsuarioEdita: string): Observable<void> {
+        const params = new HttpParams().set('id_usuario_edita', idUsuarioEdita);
+        
+        return this.http.delete<void>(`${this.base}/${idAutor}`, { params });
     }
 }
