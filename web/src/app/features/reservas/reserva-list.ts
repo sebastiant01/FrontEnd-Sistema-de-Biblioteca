@@ -33,12 +33,8 @@ export class ReservaListComponent implements AfterViewInit {
   private readonly snack = inject(MatSnackBar);
  
   readonly displayedColumns = [
-    'id_usuario',
-    'id_material',
     'fecha_reserva',
     'estado_reserva',
-    'id_usuario_crea',
-    'id_usuario_edita',
     'fecha_creacion',
     'fecha_edicion',
     'acciones',
@@ -103,5 +99,5 @@ export class ReservaListComponent implements AfterViewInit {
     if (Array.isArray(d)) return d.map((x) => x.msg ?? JSON.stringify(x)).join('; ');
     return err.message;
   }
-  
 }
+ 
