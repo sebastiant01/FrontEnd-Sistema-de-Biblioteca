@@ -26,3 +26,32 @@
   white-space: nowrap;
   text-align: right;
 }
+
+.smart-search-bar {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background-color: white;
+  padding: 16px 24px;
+  border-radius: 12px;
+  margin-bottom: 24px;
+  
+  mat-form-field {
+    margin-bottom: -1.25em;
+  }
+
+  .select-criterio {
+    width: 250px;
+    flex-shrink: 0;
+  }
+
+  .input-valor {
+    flex-grow: 1;
+  }
+
+  .search-actions {
+    display: flex;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+}

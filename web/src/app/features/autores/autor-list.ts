@@ -8,6 +8,10 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { filter } from 'rxjs/operators';
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatFormFieldModule } from '@angular/material/form-field';
 
 import { AutorService } from '../../core/services/autor.service';
 import { AutorRead } from '../../models/autor.models';
@@ -23,6 +27,10 @@ import { AutorDialogComponent, AutorDialogData } from './autor-dialog';
         MatDialogModule,
         MatProgressSpinnerModule,
         MatSnackBarModule,
+        ReactiveFormsModule,
+        MatInputModule,
+        MatSelectModule,
+        MatFormFieldModule
     ],
     templateUrl: './autor-list.html',
     styleUrl: './autor-list.scss'
@@ -31,6 +39,12 @@ export class AutorListComponent implements AfterViewInit {
     private readonly autorService = inject(AutorService);
     private readonly dialog = inject(MatDialog);
     private readonly snack = inject(MatSnackBar);
+    private readonly fb = inject(FormBuilder);
+
+    readonly filterForm = this.fb.nonNullable.group({
+        criterio: ['termino'],
+        valor: ['']
+    });
 
     readonly displayedColumns = [
         'id_autor',
@@ -39,9 +53,7 @@ export class AutorListComponent implements AfterViewInit {
         'nacionalidad',
         'activo',
         'id_usuario_crea',
-        'id_usuario_edita',
         'fecha_creacion',
-        'fecha_edicion',
         'acciones',
     ];
     readonly dataSource = new MatTableDataSource<AutorRead>([]);
@@ -60,16 +72,42 @@ export class AutorListComponent implements AfterViewInit {
 
     reload(): void {
         this.loading = true;
-        this.autorService.list().subscribe({
-            next: (rows) => {
-                this.dataSource.data = rows;
+        const filtros = this.filterForm.getRawValue();
+
+        this.autorService.list(filtros).subscribe({
+        next: (rows: any) => { 
+                let datosLimpios = [];
+
+                if (Array.isArray(rows)) {
+                    datosLimpios = rows;
+                }
+
+                else if (rows && rows.id_autor !== undefined) {
+                    datosLimpios = [rows];
+                }
+
+                this.dataSource.data = datosLimpios;
+                
+                if (this.dataSource.paginator) {
+                    this.dataSource.paginator.firstPage();
+                }
+
                 this.loading = false;
             },
             error: (err: HttpErrorResponse) => {
                 this.loading = false;
-                this.snack.open(this.msg(err), 'Cerrar', {duration: 6000});
+                this.snack.open('No se encontraron resultados', 'Cerrar', {duration: 6000});
             },
         });
+    }
+
+    buscar(): void {
+        this.reload();
+    }
+
+    limpiarFiltros(): void {
+        this.filterForm.reset();
+        this.reload();
     }
 
     nuevo(): void {
