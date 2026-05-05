@@ -104,7 +104,6 @@ export class UsuarioDialogComponent {
             documento: v.documento,
             email: v.email,
             telefono: v.telefono,
-            contrasena: v.contrasena,
             rol: v.rol,
             id_usuario_edita: idUsuarioAuditoria,
         };
