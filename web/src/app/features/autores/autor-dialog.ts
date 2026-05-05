@@ -42,7 +42,7 @@ export class AutorDialogComponent {
     readonly form = this.fb.nonNullable.group({
         nombre_autor: ['', Validators.required],
         apellido_autor: new FormControl<string | null>(null),
-        nacionalidad_autor: ['', Validators.required],
+        nacionalidad: ['', Validators.required],
         activo: [true],
     });
 
@@ -52,7 +52,7 @@ export class AutorDialogComponent {
             this.form.patchValue({
                 nombre_autor: r.nombre_autor,
                 apellido_autor: r.apellido_autor,
-                nacionalidad_autor: r.nacionalidad,
+                nacionalidad: r.nacionalidad,
                 activo: r.activo,
             });
         }
@@ -73,8 +73,8 @@ export class AutorDialogComponent {
         if (this.data.mode === 'create') {
             this.autorService.create({
                 nombre_autor: v.nombre_autor,
-                apellido_autor: v.apellido_autor,
-                nacionalidad: v.nacionalidad_autor,
+                apellido_autor: apellidoLimpio,
+                nacionalidad: v.nacionalidad,
                 activo: v.activo,
                 id_usuario_crea: idUsuarioAuditoria,
             }).subscribe({
@@ -87,7 +87,7 @@ export class AutorDialogComponent {
         const body: AutorUpdate = {
             nombre_autor: v.nombre_autor,
             apellido_autor: v.apellido_autor,
-            nacionalidad: v.nacionalidad_autor,
+            nacionalidad: v.nacionalidad,
             activo: v.activo,
             id_usuario_edita: idUsuarioAuditoria,
         };
