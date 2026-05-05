@@ -5,7 +5,28 @@
     Nuevo
   </button>
 </div>
- 
+
+<div class="filtros-container mat-elevation-z1" [formGroup]="filtrosForm">
+  <mat-form-field appearance="outline">
+    <mat-label>ID Usuario</mat-label>
+    <input matInput formControlName="id_usuario" placeholder="Filtrar por usuario...">
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>ID Préstamo</mat-label>
+    <input matInput formControlName="id_prestamo" placeholder="Filtrar por préstamo...">
+  </mat-form-field>
+
+  <div class="actions">
+    <button mat-mini-fab color="primary" (click)="reload()" matTooltip="Buscar">
+      <mat-icon>search</mat-icon>
+    </button>
+    <button mat-mini-fab color="warn" (click)="limpiarFiltros()" matTooltip="Limpiar filtros">
+      <mat-icon>filter_alt_off</mat-icon>
+    </button>
+  </div>
+</div>
+
 @if (loading) {
   <div class="loading">
     <mat-spinner />
@@ -15,24 +36,29 @@
     <table mat-table [dataSource]="dataSource">
       <ng-container matColumnDef="fecha_inicio">
         <th mat-header-cell *matHeaderCellDef>Fecha inicio</th>
-        <td mat-cell *matCellDef="let r">{{ r.fecha_inicio }}</td>
+        <td mat-cell *matCellDef="let r">{{ r.fecha_inicio | date:'shortDate' }}</td>
       </ng-container>
+
       <ng-container matColumnDef="dias_sancion">
-        <th mat-header-cell *matHeaderCellDef>Días sanción</th>
+        <th mat-header-cell *matHeaderCellDef>Días</th>
         <td mat-cell *matCellDef="let r">{{ r.dias_sancion }}</td>
       </ng-container>
+
       <ng-container matColumnDef="motivo">
         <th mat-header-cell *matHeaderCellDef>Motivo</th>
         <td mat-cell *matCellDef="let r">{{ r.motivo }}</td>
       </ng-container>
+
       <ng-container matColumnDef="fecha_creacion">
         <th mat-header-cell *matHeaderCellDef>Fecha creación</th>
-        <td mat-cell *matCellDef="let r">{{ r.fecha_creacion }}</td>
+        <td mat-cell *matCellDef="let r">{{ r.fecha_creacion | date:'short' }}</td>
       </ng-container>
+
       <ng-container matColumnDef="fecha_edicion">
         <th mat-header-cell *matHeaderCellDef>Fecha edición</th>
-        <td mat-cell *matCellDef="let r">{{ r.fecha_edicion }}</td>
+        <td mat-cell *matCellDef="let r">{{ r.fecha_edicion | date:'short' }}</td>
       </ng-container>
+
       <ng-container matColumnDef="acciones">
         <th mat-header-cell *matHeaderCellDef></th>
         <td mat-cell *matCellDef="let r" class="actions">
@@ -44,10 +70,10 @@
           </button>
         </td>
       </ng-container>
+
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
     </table>
     <mat-paginator [pageSizeOptions]="[5, 10, 25]" showFirstLastButtons />
   </div>
 }
- 
