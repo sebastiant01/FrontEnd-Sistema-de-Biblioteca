@@ -33,6 +33,7 @@ export class UsuarioListComponent implements AfterViewInit {
     private readonly snack = inject(MatSnackBar);
 
     readonly displayedColumns = [
+        'id_usuario',
         'nombre',
         'apellido',
         'documento',
@@ -40,6 +41,11 @@ export class UsuarioListComponent implements AfterViewInit {
         'telefono',
         'username',
         'rol',
+        'id_usuario_crea',
+        'id_usuario_edita',
+        'fecha_creacion',
+        'fecha_edicion',
+        'acciones',
     ];
     readonly dataSource = new MatTableDataSource<UsuarioRead>([]);
 
@@ -69,18 +75,23 @@ export class UsuarioListComponent implements AfterViewInit {
         });
     }
 
-    nuevo(): void {
-        this.openDialog({ mode: 'create'});
-    }
-
-    editar(row: UsuarioRead): void {
-        this.openDialog({ mode: 'edit', row});
-    }
-
-    private openDialog(data: UsuarioDialogData): void {
-        this.dialog.open(UsuarioDialogComponent, {width: '520px', data}).afterClosed()
-        .pipe(filter(Boolean)).subscribe(() => this.reload());
-    }
+  nuevo(): void {
+    const data: UsuarioDialogData = { mode: 'create' };
+    this.dialog
+      .open(UsuarioDialogComponent, { data, width: '480px' })
+      .afterClosed()
+      .pipe(filter(Boolean))
+      .subscribe(() => this.reload());
+  }
+ 
+  editar(row: UsuarioRead): void {
+    const data: UsuarioDialogData = { mode: 'edit', row };
+    this.dialog
+      .open(UsuarioDialogComponent, { data, width: '480px' })
+      .afterClosed()
+      .pipe(filter(Boolean))
+      .subscribe(() => this.reload());
+  }
 
     eliminar(row: UsuarioRead): void {
         if (!confirm(`Eliminar usuario ${row.nombre} ${row.apellido}?`)) return;

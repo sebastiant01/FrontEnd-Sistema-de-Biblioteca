@@ -5,6 +5,7 @@ export interface UsuarioRead {
     documento: string;
     email: string;
     telefono: string;
+    username: string;
     rol: string;
     fecha_creacion: Date;
     fecha_edicion?: Date | null;

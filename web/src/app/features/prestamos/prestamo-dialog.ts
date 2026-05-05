@@ -63,6 +63,7 @@ export class PrestamoDialogComponent {
         }
         if (this.data.mode === 'create' && this.data.row) {
             this.createForm.patchValue({
+                id_usuario: this.data.row.id_usuario,
                 id_material: this.data.row.id_material,
             });
         }
