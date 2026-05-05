@@ -11,19 +11,35 @@ export class AutorService {
 
     constructor(private readonly http:HttpClient) {}
 
-    list(): Observable<AutorRead[]> {
-        const params = new HttpParams().set('skip', 0).set('limit', 250);
-        return this.http.get<AutorRead[]>(`${this.base}`, { params });
+    list(filtros?: { criterio: string, valor: string }) {
+        if (!filtros || !filtros.valor.trim()) {
+            return this.http.get<AutorRead[]>(`${this.base}`);
+        }
+
+        const valor = filtros.valor.trim();
+        let url = `${this.base}`;
+
+        switch (filtros.criterio) {
+            case 'id_autor':
+                url += `/${valor}`;
+                break;
+            case 'termino':
+            default:
+                url += `/buscar`;
+                break;
+        }
+
+        return this.http.get<AutorRead[]>(url);
     }
     
-    search(termino: string): Observable<AutorRead[]> {
+    /*search(termino: string): Observable<AutorRead[]> {
         const params = new HttpParams().set('skip', 0).set('limit', 250);
         return this.http.get<AutorRead[]>(`${this.base}/buscar`, { params });
     }
 
     getById(id: string): Observable<AutorRead> {
         return this.http.get<AutorRead>(`${this.base}/${id}`);
-    }
+    }*/
 
     create(body: AutorCreate): Observable<AutorRead> {
         return this.http.post<AutorRead>(`${this.base}`, body);
@@ -33,7 +49,9 @@ export class AutorService {
         return this.http.put<AutorRead>(`${this.base}/${id}`, body);
     }
 
-    delete(id: string): Observable <void> {
-        return this.http.delete(`${this.base}/${id}`, { observe: 'response' }).pipe(map(() => undefined));
+    delete(idAutor: string, idUsuarioEdita: string): Observable<void> {
+        const params = new HttpParams().set('id_usuario_edita', idUsuarioEdita);
+        
+        return this.http.delete<void>(`${this.base}/${idAutor}`, { params });
     }
 }

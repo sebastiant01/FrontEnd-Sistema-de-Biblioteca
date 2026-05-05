@@ -8,6 +8,10 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { filter } from 'rxjs/operators';
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatFormFieldModule } from '@angular/material/form-field';
 
 import { UsuarioService } from '../../core/services/usuario.service';
 import { UsuarioRead } from '../../models/usuario.models';
@@ -23,6 +27,10 @@ import { UsuarioDialogComponent, UsuarioDialogData } from './usuario-dialog';
         MatDialogModule,
         MatProgressSpinnerModule,
         MatSnackBarModule,
+        ReactiveFormsModule,
+        MatInputModule,
+        MatSelectModule,
+        MatFormFieldModule
     ],
     templateUrl: './usuario-list.html',
     styleUrl: './usuario-list.scss'
@@ -31,6 +39,12 @@ export class UsuarioListComponent implements AfterViewInit {
     private readonly usuarioService = inject(UsuarioService);
     private readonly dialog = inject(MatDialog);
     private readonly snack = inject(MatSnackBar);
+    private readonly fb = inject(FormBuilder);
+
+    readonly filterForm = this.fb.nonNullable.group({
+        criterio: ['termino'],
+        valor: ['']
+    });
 
     readonly displayedColumns = [
         'id_usuario',
@@ -42,9 +56,7 @@ export class UsuarioListComponent implements AfterViewInit {
         'username',
         'rol',
         'id_usuario_crea',
-        'id_usuario_edita',
         'fecha_creacion',
-        'fecha_edicion',
         'acciones',
     ];
     readonly dataSource = new MatTableDataSource<UsuarioRead>([]);
@@ -63,35 +75,61 @@ export class UsuarioListComponent implements AfterViewInit {
 
     reload(): void {
         this.loading = true;
-        this.usuarioService.list().subscribe({
-            next: (rows) => {
-                this.dataSource.data = rows;
+        const filtros = this.filterForm.getRawValue();
+
+        this.usuarioService.list(filtros).subscribe({
+        next: (rows: any) => { 
+                let datosLimpios = [];
+
+                if (Array.isArray(rows)) {
+                    datosLimpios = rows;
+                }
+
+                else if (rows && rows.id_usuario !== undefined) {
+                    datosLimpios = [rows];
+                }
+
+                this.dataSource.data = datosLimpios;
+                
+                if (this.dataSource.paginator) {
+                    this.dataSource.paginator.firstPage();
+                }
+
                 this.loading = false;
             },
             error: (err: HttpErrorResponse) => {
                 this.loading = false;
-                this.snack.open(this.msg(err), 'Cerrar', {duration: 6000});
+                this.snack.open('No se encontraron resultados', 'Cerrar', {duration: 6000});
             },
         });
     }
 
-  nuevo(): void {
-    const data: UsuarioDialogData = { mode: 'create' };
-    this.dialog
-      .open(UsuarioDialogComponent, { data, width: '480px' })
-      .afterClosed()
-      .pipe(filter(Boolean))
-      .subscribe(() => this.reload());
-  }
- 
-  editar(row: UsuarioRead): void {
-    const data: UsuarioDialogData = { mode: 'edit', row };
-    this.dialog
-      .open(UsuarioDialogComponent, { data, width: '480px' })
-      .afterClosed()
-      .pipe(filter(Boolean))
-      .subscribe(() => this.reload());
-  }
+    buscar(): void {
+        this.reload();
+    }
+
+    limpiarFiltros(): void {
+        this.filterForm.reset();
+        this.reload();
+    }
+
+    nuevo(): void {
+        const data: UsuarioDialogData = { mode: 'create' };
+        this.dialog
+        .open(UsuarioDialogComponent, { data, width: '480px' })
+        .afterClosed()
+        .pipe(filter(Boolean))
+        .subscribe(() => this.reload());
+    }
+    
+    editar(row: UsuarioRead): void {
+        const data: UsuarioDialogData = { mode: 'edit', row };
+        this.dialog
+        .open(UsuarioDialogComponent, { data, width: '480px' })
+        .afterClosed()
+        .pipe(filter(Boolean))
+        .subscribe(() => this.reload());
+    }
 
     eliminar(row: UsuarioRead): void {
         if (!confirm(`Eliminar usuario ${row.nombre} ${row.apellido}?`)) return;
