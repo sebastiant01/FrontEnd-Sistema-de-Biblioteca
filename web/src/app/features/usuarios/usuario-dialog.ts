@@ -46,7 +46,7 @@ export class UsuarioDialogComponent {
         nombre: ['', Validators.required],
         apellido: ['', Validators.required],
         documento: ['', Validators.required],
-        email: ['', Validators.required, Validators.email],
+        email: ['', [Validators.required, Validators.email]],
         telefono: ['', Validators.required],
         contrasena: [''],
         rol: ['', Validators.required],

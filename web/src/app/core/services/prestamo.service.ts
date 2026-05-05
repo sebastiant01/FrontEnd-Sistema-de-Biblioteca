@@ -13,7 +13,7 @@ export class PrestamoService {
 
     list(): Observable<PrestamoRead[]> {
         const params = new HttpParams().set('skip', 0).set('limit', 200);
-        return this.http.get<PrestamoRead[]>(`${this.base}/`, {params });
+        return this.http.get<PrestamoRead[]>(`${this.base}`, {params });
     }
 
     getById(id: string): Observable<PrestamoRead> {
@@ -36,11 +36,11 @@ export class PrestamoService {
     }
 
     create(body: PrestamoCreate): Observable<PrestamoRead> {
-        return this.http.post<PrestamoRead>(`${this.base}/`, body);
+        return this.http.post<PrestamoRead>(`${this.base}`, body);
     }
 
     update(id: string, body: PrestamoUpdate): Observable<PrestamoRead> {
-        return this.http.put<PrestamoRead>(`${this.base}/`, body);
+        return this.http.put<PrestamoRead>(`${this.base}/${id}`, body);
     }
 
     delete(id: string): Observable <void> {
