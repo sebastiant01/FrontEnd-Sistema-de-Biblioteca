@@ -26,3 +26,28 @@
   white-space: nowrap;
   text-align: right;
 }
+
+.filtros-container {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  padding: 16px;
+  margin-bottom: 20px;
+  background: white;
+  flex-wrap: wrap;
+  border-radius: 8px;
+
+  mat-form-field {
+    flex: 1;
+    min-width: 150px;
+  }
+
+  .id-input, .code-input {
+    max-width: 200px;
+  }
+
+  .actions {
+    display: flex;
+    gap: 8px;
+  }
+}
