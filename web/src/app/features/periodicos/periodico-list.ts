@@ -8,17 +8,25 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { CommonModule } from '@angular/common';
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { filter } from 'rxjs/operators';
 
 import { PeriodicoService } from '../../core/services/periodico.service';
 import { PeriodicoRead } from '../../models/periodico.models';
 import { PeriodicoDialogComponent } from './periodico-dialog';
+import { shortId } from '../../shared/ids';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
     selector: 'app-periodico-list',
     standalone: true,
     imports: [
         CommonModule,
+        ReactiveFormsModule,
         MatTableModule,
         MatPaginatorModule,
         MatButtonModule,
@@ -26,6 +34,11 @@ import { PeriodicoDialogComponent } from './periodico-dialog';
         MatDialogModule,
         MatProgressSpinnerModule,
         MatSnackBarModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatCheckboxModule,
+        MatDividerModule,
+        MatTooltipModule
     ],
     templateUrl: './periodico-list.html',
     styleUrl: './periodico-list.scss'
@@ -34,6 +47,9 @@ export class PeriodicoListComponent implements AfterViewInit {
     private readonly periodicoService = inject(PeriodicoService);
     private readonly dialog = inject(MatDialog);
     private readonly snack = inject(MatSnackBar);
+    private readonly fb = inject(FormBuilder)
+
+    protected readonly formatId = shortId;
 
     readonly displayedColumns = [
         'codigo_material',
@@ -49,6 +65,14 @@ export class PeriodicoListComponent implements AfterViewInit {
 
     loading = true;
 
+    readonly filtrosForm = this.fb.group({
+        id_periodico: [''],
+        codigo_material: [''],
+        por_titulo: [''],
+        por_ciudad: [''],
+        solo_disponibles: [false]
+    });
+
     @ViewChild(MatPaginator) paginator!: MatPaginator;
 
     ngAfterViewInit(): void {
@@ -61,16 +85,48 @@ export class PeriodicoListComponent implements AfterViewInit {
 
     reload(): void {
         this.loading = true;
-        this.periodicoService.list().subscribe({
-            next: (rows) => {
-                this.dataSource.data = rows;
-                this.loading = false;
-            },
-            error: (err: HttpErrorResponse) => {
-                this.loading = false;
-                this.snack.open(this.msg(err), 'Cerrar', { duration: 6000 });
-            },
+        const { id_periodico, codigo_material, ...otrosFiltros } = this.filtrosForm.value;
+
+        if (id_periodico?.trim()) {
+        this.periodicoService.getById(id_periodico.trim()).subscribe({
+            next: (res) => this.setTableData([res]),
+            error: (err) => this.handleError(err, 'ID')
         });
+        return;
+        }
+
+        if (codigo_material?.trim()) {
+        this.periodicoService.getByCode(codigo_material.trim()).subscribe({
+            next: (res) => this.setTableData([res]),
+            error: (err) => this.handleError(err, 'Código')
+        });
+        return;
+        }
+
+        this.periodicoService.list(otrosFiltros as any).subscribe({
+        next: (rows) => this.setTableData(rows),
+        error: (err) => this.handleError(err)
+        });
+    }
+
+    private setTableData(data: PeriodicoRead[]): void {
+        this.dataSource.data = data;
+        this.loading = false;
+    }
+
+    private handleError(err: HttpErrorResponse, context?: string): void {
+        this.loading = false;
+        this.dataSource.data = [];
+        const mensaje = context ? `No se encontró resultado por ${context}` : this.msg(err);
+        this.snack.open(mensaje, 'Cerrar', { duration: 5000 });
+    }
+
+    limpiarFiltros(): void {
+        this.filtrosForm.reset({ 
+        id_periodico: '', codigo_material: '', por_titulo: '', 
+        por_ciudad: '', solo_disponibles: false 
+        });
+        this.reload();
     }
 
     create(): void {
