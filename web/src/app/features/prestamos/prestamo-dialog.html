@@ -21,7 +21,7 @@
   <form [formGroup]="editForm" class="grid">
     <mat-form-field appearance="outline" class="span-2">
       <mat-label>Estado del Préstamo</mat-label>
-        <mat-select formControlName="estado"></mat-select>
+        <mat-select formControlName="estado">
             @for (e of estados; track e) {
                 <mat-option [value]="e">{{ e }}</mat-option>
             }
