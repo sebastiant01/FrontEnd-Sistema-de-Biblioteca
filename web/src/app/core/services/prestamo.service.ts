@@ -11,12 +11,33 @@ export class PrestamoService {
 
     constructor(private readonly http: HttpClient) {}
 
-    list(): Observable<PrestamoRead[]> {
-        const params = new HttpParams().set('skip', 0).set('limit', 200);
-        return this.http.get<PrestamoRead[]>(`${this.base}`, {params });
+    list(filtros?: { criterio: string, valor: string }) {
+        if (!filtros || !filtros.valor.trim()) {
+            return this.http.get<PrestamoRead[]>(`${this.base}`);
+        }
+
+        const valor = filtros.valor.trim();
+        let url = `${this.base}`;
+
+        switch (filtros.criterio) {
+            case 'id':
+                url += `/${valor}`;
+                break;
+            case 'id_usu':
+                url += `/usuario/${valor}`;
+                break;
+            case 'id_usu_active':
+                url += `/usuario/${valor}]/activos`;
+                break;
+            case 'id_mat':
+                url += `/material/${valor}`;
+                break;
+        }
+
+        return this.http.get<PrestamoRead[]>(url);
     }
 
-    getById(id: string): Observable<PrestamoRead> {
+    /*getById(id: string): Observable<PrestamoRead> {
         return this.http.get<PrestamoRead>(`${this.base}/${id}`);
     }
 
@@ -33,7 +54,7 @@ export class PrestamoService {
     getByMaterialId(id_mat: string): Observable<PrestamoRead[]> {
         const params = new HttpParams().set('skip', 0).set('limit', 200);
         return this.http.get<PrestamoRead[]>(`${this.base}/material/${id_mat}`, { params });
-    }
+    }*/
 
     create(body: PrestamoCreate): Observable<PrestamoRead> {
         return this.http.post<PrestamoRead>(`${this.base}`, body);

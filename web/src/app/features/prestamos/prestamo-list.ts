@@ -6,8 +6,12 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-import { MatTable, MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { filter } from 'rxjs/operators';
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatFormFieldModule } from '@angular/material/form-field';
 
 import { PrestamoService } from '../../core/services/prestamo.service';
 import { PrestamoRead } from '../../models/prestamo.models';
@@ -24,6 +28,10 @@ import { PrestamoDialogComponent, PrestamoDialogData } from './prestamo-dialog';
         MatDialogModule,
         MatProgressSpinnerModule,
         MatSnackBarModule,
+        ReactiveFormsModule,
+        MatInputModule,
+        MatSelectModule,
+        MatFormFieldModule
     ],
     templateUrl: './prestamo-list.html',
     styleUrl: './prestamo-list.scss'
@@ -32,6 +40,12 @@ export class PrestamoListComponent implements AfterViewInit {
     private readonly prestamoService = inject(PrestamoService);
     private readonly dialog = inject(MatDialog);
     private readonly snack = inject(MatSnackBar);
+    private readonly fb = inject(FormBuilder);
+
+    readonly filterForm = this.fb.nonNullable.group({
+        criterio: ['termino'],
+        valor: ['']
+    });
 
     readonly displayedColumns = [
         'id_prestamo',
@@ -61,16 +75,42 @@ export class PrestamoListComponent implements AfterViewInit {
 
     reload(): void {
         this.loading = true;
-        this.prestamoService.list().subscribe({
-            next: (rows) => {
-                this.dataSource.data = rows;
+        const filtros = this.filterForm.getRawValue();
+
+        this.prestamoService.list(filtros).subscribe({
+        next: (rows: any) => { 
+                let datosLimpios = [];
+
+                if (Array.isArray(rows)) {
+                    datosLimpios = rows;
+                }
+
+                else if (rows && rows.id_prestamo !== undefined) {
+                    datosLimpios = [rows];
+                }
+
+                this.dataSource.data = datosLimpios;
+                
+                if (this.dataSource.paginator) {
+                    this.dataSource.paginator.firstPage();
+                }
+
                 this.loading = false;
             },
             error: (err: HttpErrorResponse) => {
                 this.loading = false;
-                this.snack.open(this.msg(err), 'Cerrar', { duration: 6000 });
+                this.snack.open('No se encontraron resultados', 'Cerrar', {duration: 6000});
             },
         });
+    }
+
+    buscar(): void {
+        this.reload();
+    }
+
+    limpiarFiltros(): void {
+        this.filterForm.reset();
+        this.reload();
     }
 
     nuevo(): void {

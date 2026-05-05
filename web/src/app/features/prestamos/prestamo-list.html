@@ -6,6 +6,31 @@
   </button>
 </div>
 
+<form [formGroup]="filterForm" (ngSubmit)="buscar()" class="smart-search-bar mat-elevation-z2">
+  
+  <mat-form-field appearance="outline" class="select-criterio">
+    <mat-label>Buscar por</mat-label>
+    <mat-select formControlName="criterio">
+      <mat-option value="id">ID Préstamo</mat-option>
+      <mat-option value="id_usu">ID Usuario</mat-option>
+      <mat-option value="id_usu_active">Activos de Usuario</mat-option>
+      <mat-option value="id_mat">ID Material</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="input-valor">
+    <mat-label>Escribe aquí...</mat-label>
+    <input matInput formControlName="valor" placeholder="Ingrese un ID válido">
+    <mat-icon matSuffix>search</mat-icon>
+  </mat-form-field>
+
+  <div class="search-actions">
+    <button mat-flat-button color="primary" type="submit">Buscar</button>
+    <button mat-button type="button" (click)="limpiarFiltros()">Limpiar</button>
+  </div>
+
+</form>
+
 @if (loading) {
   <div class="loading">
     <mat-spinner />
