@@ -11,9 +11,37 @@ export class UsuarioService {
 
     constructor(private readonly http: HttpClient) {}
 
-    list(): Observable<UsuarioRead[]> {
-        const params = new HttpParams().set('skip', 0).set('limit', 300);
-        return this.http.get<UsuarioRead[]>(`${this.base}`, { params });
+    list(filtros?: { criterio: string, valor: string }) {
+        if (!filtros || !filtros.valor.trim()) {
+            return this.http.get<UsuarioRead[]>(`${this.base}`);
+        }
+
+        const valor = filtros.valor.trim();
+        let url = `${this.base}`;
+
+        switch (filtros.criterio) {
+            case 'id_usuario':
+                url += `/${valor}`;
+                break;
+            case 'documento':
+                url += `/documento/${valor}`;
+                break;
+            case 'email':
+                url += `/email/${valor}`;
+                break;
+            case 'telefono':
+                url += `/telefono/${valor}`;
+                break;
+            case 'username':
+                url += `/username/${valor}`;
+                break;
+            case 'termino':
+            default:
+                url += `/buscar`;
+                break;
+        }
+
+        return this.http.get<UsuarioRead[]>(url);
     }
 
     search(termino: string): Observable<UsuarioRead[]> {
@@ -21,7 +49,7 @@ export class UsuarioService {
         return this.http.get<UsuarioRead[]>(`${this.base}/buscar`, { params });
     }
 
-    getById(id: string): Observable<UsuarioRead> {
+    /* getById(id: string): Observable<UsuarioRead> {
         return this.http.get<UsuarioRead>(`${this.base}/${id}`);
     }
     
@@ -39,7 +67,7 @@ export class UsuarioService {
 
     getByPhone(telefono: string): Observable<UsuarioRead> {
         return this.http.get<UsuarioRead>(`${this.base}/telefono/${telefono}`);
-    }
+    } */
 
     create(body: UsuarioCreate): Observable<UsuarioRead> {
         return this.http.post<UsuarioRead>(`${this.base}`, body);
