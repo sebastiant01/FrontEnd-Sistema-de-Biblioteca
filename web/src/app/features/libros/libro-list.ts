@@ -13,12 +13,20 @@ import { filter } from 'rxjs/operators';
 import { LibroService } from '../../core/services/libro.service';
 import { LibroRead } from '../../models/libro.models';
 import { LibroDialogComponent } from './libro-dialog';
+import { shortId } from '../../shared/ids';
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatInputModule } from '@angular/material/input';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
     selector: 'app-libro-list',
     standalone: true,
     imports: [
         CommonModule,
+        ReactiveFormsModule,
         MatTableModule,
         MatPaginatorModule,
         MatButtonModule,
@@ -26,6 +34,11 @@ import { LibroDialogComponent } from './libro-dialog';
         MatDialogModule,
         MatProgressSpinnerModule,
         MatSnackBarModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatCheckboxModule,
+        MatDividerModule,
+        MatTooltipModule
     ],
     templateUrl: './libro-list.html',
     styleUrl: './libro-list.scss'
@@ -34,6 +47,9 @@ export class LibroListComponent implements AfterViewInit {
     private readonly libroService = inject(LibroService);
     private readonly dialog = inject(MatDialog);
     private readonly snack = inject(MatSnackBar);
+    private readonly fb = inject(FormBuilder);
+
+    protected readonly formatId = shortId;
 
     readonly displayedColumns = [
         'codigo_material',
@@ -49,6 +65,14 @@ export class LibroListComponent implements AfterViewInit {
 
     loading = true;
 
+    readonly filtrosForm = this.fb.group({
+        id_libro: [''],
+        codigo_material: [''],
+        por_titulo: [''],
+        por_genero: [''],
+        solo_disponibles: [false]
+    });
+
     @ViewChild(MatPaginator) paginator!: MatPaginator;
 
     ngAfterViewInit(): void {
@@ -61,16 +85,48 @@ export class LibroListComponent implements AfterViewInit {
 
     reload(): void {
         this.loading = true;
-        this.libroService.list().subscribe({
-            next: (rows) => {
-                this.dataSource.data = rows;
-                this.loading = false;
-            },
-            error: (err: HttpErrorResponse) => {
-                this.loading = false;
-                this.snack.open(this.msg(err), 'Cerrar', { duration: 6000 });
-            },
+        const { id_libro, codigo_material, ...otrosFiltros } = this.filtrosForm.value;
+
+        if (id_libro?.trim()) {
+            this.libroService.getById(id_libro.trim()).subscribe({
+                next: (res) => this.setTableData([res]),
+                error: (err) => this.handleError(err, 'ID')
+            });
+            return;
+        }
+
+        if (codigo_material?.trim()) {
+            this.libroService.getByCode(codigo_material.trim()).subscribe({
+                next: (res) => this.setTableData([res]),
+                error: (err) => this.handleError(err, 'Código')
+            });
+            return;
+        }
+
+        this.libroService.list(otrosFiltros as any).subscribe({
+            next: (rows) => this.setTableData(rows),
+            error: (err) => this.handleError(err)
         });
+    }
+
+    private setTableData(data: LibroRead[]): void {
+        this.dataSource.data = data;
+        this.loading = false;
+    }
+
+    private handleError(err: HttpErrorResponse, context?: string): void {
+        this.loading = false;
+        this.dataSource.data = [];
+        const mensaje = context ? `No se encontró resultado por ${context}` : this.msg(err);
+        this.snack.open(mensaje, 'Cerrar', { duration: 5000 });
+    }
+
+    limpiarFiltros(): void {
+        this.filtrosForm.reset({ 
+            id_libro: '', codigo_material: '', por_titulo: '', 
+            por_genero: '', solo_disponibles: false 
+        });
+        this.reload();
     }
 
     create(): void {
