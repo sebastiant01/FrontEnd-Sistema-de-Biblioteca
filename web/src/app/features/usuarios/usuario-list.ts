@@ -56,9 +56,7 @@ export class UsuarioListComponent implements AfterViewInit {
         'username',
         'rol',
         'id_usuario_crea',
-        'id_usuario_edita',
         'fecha_creacion',
-        'fecha_edicion',
         'acciones',
     ];
     readonly dataSource = new MatTableDataSource<UsuarioRead>([]);

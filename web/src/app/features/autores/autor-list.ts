@@ -53,9 +53,7 @@ export class AutorListComponent implements AfterViewInit {
         'nacionalidad',
         'activo',
         'id_usuario_crea',
-        'id_usuario_edita',
         'fecha_creacion',
-        'fecha_edicion',
         'acciones',
     ];
     readonly dataSource = new MatTableDataSource<AutorRead>([]);
