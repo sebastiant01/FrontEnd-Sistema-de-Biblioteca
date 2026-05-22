@@ -25,3 +25,6 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# Private key deploy
+biblioteca-d7ea1-firebase-adminsdk-fbsvc-cf5f391189.json
