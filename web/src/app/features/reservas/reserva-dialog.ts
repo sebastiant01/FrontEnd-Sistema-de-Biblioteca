@@ -54,10 +54,23 @@ export class ReservaDialogComponent {
       this.form.patchValue({
         id_usuario: r.id_usuario,
         id_material: r.id_material,
-        fecha_reserva: r.fecha_reserva,
+        fecha_reserva: this.toInputDate(r.fecha_reserva),
         estado_reserva: r.estado_reserva,
       });
     }
+  }
+ 
+  private toInputDate(fecha: string): string {
+    if (!fecha) return '';
+    if (/^\d{4}-\d{2}-\d{2}$/.test(fecha)) return fecha;
+    const parts = fecha.split('/');
+    if (parts.length === 3) return `${parts[2]}-${parts[1]}-${parts[0]}`;
+    return fecha;
+  }
+ 
+  private toBackendDate(fecha: string): string {
+    if (!fecha) return '';
+    return fecha; 
   }
  
   cancel(): void {
@@ -75,7 +88,7 @@ export class ReservaDialogComponent {
       this.reservaService.create({
         id_usuario: v.id_usuario,
         id_material: v.id_material,
-        fecha_reserva: v.fecha_reserva,
+        fecha_reserva: this.toBackendDate(v.fecha_reserva),
         estado_reserva: v.estado_reserva as any,
         id_usuario_crea: idUsuarioAuditoria ?? '',
       }).subscribe({
@@ -86,7 +99,7 @@ export class ReservaDialogComponent {
     }
     const id = this.data.row!.id_reserva;
     const body: ReservaUpdate = {
-      fecha_reserva: v.fecha_reserva,
+      fecha_reserva: this.toBackendDate(v.fecha_reserva),
       estado_reserva: v.estado_reserva as any,
       id_usuario_edita: idUsuarioAuditoria,
     };
@@ -103,4 +116,3 @@ export class ReservaDialogComponent {
     return err.message;
   }
 }
- 
