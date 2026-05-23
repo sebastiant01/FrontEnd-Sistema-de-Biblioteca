@@ -53,11 +53,19 @@ export class SancionDialogComponent {
       this.form.patchValue({
         id_usuario: r.id_usuario,
         id_prestamo: r.id_prestamo,
-        fecha_inicio: r.fecha_inicio,
+        fecha_inicio: this.toInputDate(r.fecha_inicio),
         dias_sancion: r.dias_sancion,
         motivo: r.motivo,
       });
     }
+  }
+ 
+  private toInputDate(fecha: string): string {
+    if (!fecha) return '';
+    if (/^\d{4}-\d{2}-\d{2}$/.test(fecha)) return fecha;
+    const parts = fecha.split('/');
+    if (parts.length === 3) return `${parts[2]}-${parts[1]}-${parts[0]}`;
+    return fecha;
   }
  
   cancel(): void {
