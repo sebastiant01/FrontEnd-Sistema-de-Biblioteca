@@ -59,9 +59,17 @@ export class RevistaDialogComponent {
         numero_edicion: r.numero_edicion,
         id_autor: r.id_autor,
         descripcion_material: r.descripcion_material ?? '',
-        fecha_material: r.fecha_material ?? '',
+        fecha_material: this.toInputDate(r.fecha_material ?? ''),
       });
     }
+  }
+ 
+  private toInputDate(fecha: string): string {
+    if (!fecha) return '';
+    if (/^\d{4}-\d{2}-\d{2}$/.test(fecha)) return fecha;
+    const parts = fecha.split('/');
+    if (parts.length === 3) return `${parts[2]}-${parts[1]}-${parts[0]}`;
+    return fecha;
   }
  
   cancel(): void {
@@ -116,3 +124,4 @@ export class RevistaDialogComponent {
     return err.message;
   }
 }
+ 
