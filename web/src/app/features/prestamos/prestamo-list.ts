@@ -16,6 +16,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { PrestamoService } from '../../core/services/prestamo.service';
 import { PrestamoRead } from '../../models/prestamo.models';
 import { PrestamoDialogComponent, PrestamoDialogData } from './prestamo-dialog';
+import { AuditContextService } from '../../core/audit-context.service';
 
 
 @Component({
@@ -41,6 +42,20 @@ export class PrestamoListComponent implements AfterViewInit {
     private readonly dialog = inject(MatDialog);
     private readonly snack = inject(MatSnackBar);
     private readonly fb = inject(FormBuilder);
+    private readonly auditService = inject(AuditContextService);
+
+    esAdmin: boolean = false;
+
+    ngOnInit() {
+        this.verificarRol();
+    }
+
+    verificarRol(): void {
+        const rol_usuario = this.auditService.usuarioRol();
+        if (rol_usuario) {
+            this.esAdmin = rol_usuario.trim() === 'Admin';
+        }
+    }
 
     readonly filterForm = this.fb.nonNullable.group({
         criterio: ['termino'],

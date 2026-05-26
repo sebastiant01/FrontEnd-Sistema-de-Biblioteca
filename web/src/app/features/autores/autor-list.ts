@@ -42,6 +42,20 @@ export class AutorListComponent implements AfterViewInit {
     private readonly snack = inject(MatSnackBar);
     private readonly fb = inject(FormBuilder);
     private readonly audit = inject(AuditContextService)
+    private readonly auditService = inject(AuditContextService);
+
+    esAdmin: boolean = false;
+
+    ngOnInit() {
+        this.verificarRol();
+    }
+
+    verificarRol(): void {
+        const rol_usuario = this.auditService.usuarioRol();
+        if (rol_usuario) {
+            this.esAdmin = rol_usuario.trim() === 'Admin';
+        }
+    }
 
     readonly filterForm = this.fb.nonNullable.group({
         criterio: ['termino'],
