@@ -57,17 +57,7 @@ export class LoginComponent implements OnInit {
   }
 
   reload(): void {
-    this.loading.set(true);
-    this.usuarioService.list().subscribe({
-        next: (rows) => {
-            this.usuarios.set(rows);
-            this.loading.set(false);
-        },
-        error: (err: HttpErrorResponse) => {
-            this.loading.set(false);
-            this.snack.open(this.msg(err), 'Cerrar unu', {duration: 6000 });
-        },
-    });
+    this.loading.set(false);
   }
 
   ingresar(): void {
@@ -82,9 +72,9 @@ export class LoginComponent implements OnInit {
       contrasena: contrasena
     }).subscribe({
       next: (response) => {
-        this.audit.select(response.id_usuario);
+        this.audit.select(response.access_token);
 
-        this.snack.open(`${response.message} ${response.nombre} ${response.apellido}`)
+        this.snack.open(`${response.message} ${username}`, 'Cerrar', { duration: 6000 });
 
         void this.router.navigateByUrl('/app');
       },
@@ -99,7 +89,7 @@ export class LoginComponent implements OnInit {
         return;
     }
     const v = this.firstUserForm.getRawValue();
-    this.usuarioService.create({
+    this.usuarioService.register({
         nombre: v.nombre,
         apellido: v.apellido,
         documento: v.documento,
@@ -108,10 +98,12 @@ export class LoginComponent implements OnInit {
         contrasena: v.contrasena,
         rol: 'Usuario',
     }).subscribe({
-        next: (created) => {
-            this.usuarios.set([...this.usuarios(), created]);
-            this.audit.select(created.id_usuario);
-            void this.router.navigateByUrl('/app');
+        next: (response) => {
+          this.audit.select(response.access_token);
+
+          this.snack.open(`${response.message} Nuevo username: ${response.username_generado}`, 'Entendido', { duration:20000 })
+
+          void this.router.navigateByUrl('/app');
         },
         error: (err: HttpErrorResponse) => this.snack.open(this.msg(err), 'Cerrar', { duration:6000 }),
     });
