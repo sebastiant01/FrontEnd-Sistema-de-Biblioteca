@@ -82,9 +82,16 @@ export class UsuarioService {
     }
 
     login(credenciales: { username: string, contrasena: string}) {
-        return this.http.post<{ status: string, message: string, id_usuario: string, nombre: string, apellido: string, username: string, rol: string }>(
+        return this.http.post<{ status: string, message: string, access_token: string, token_type: string }>(
             `${environment.apiUrl}/auth/login`,
             credenciales
+        );
+    }
+
+    register(body: UsuarioCreate): Observable<{ status: string, message: string, access_token: string, token_type: string, username_generado: string }> {
+        return this.http.post<{ status: string, message: string, access_token: string, token_type: string, username_generado: string }>(
+            `${environment.apiUrl}/auth/registro`,
+            body
         );
     }
 }

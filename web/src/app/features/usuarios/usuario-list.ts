@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { AfterViewInit, Component, inject, viewChild, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, inject, OnInit, ViewChild } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
@@ -16,6 +16,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { UsuarioService } from '../../core/services/usuario.service';
 import { UsuarioRead } from '../../models/usuario.models';
 import { UsuarioDialogComponent, UsuarioDialogData } from './usuario-dialog';
+import { AuditContextService } from '../../core/audit-context.service';
 
 @Component({
     selector: 'app-usuario-list',
@@ -40,6 +41,20 @@ export class UsuarioListComponent implements AfterViewInit {
     private readonly dialog = inject(MatDialog);
     private readonly snack = inject(MatSnackBar);
     private readonly fb = inject(FormBuilder);
+    private readonly auditService = inject(AuditContextService);
+
+    esAdmin: boolean = false;
+
+    ngOnInit() {
+        this.verificarRol();
+    }
+
+    verificarRol(): void {
+        const rol_usuario = this.auditService.usuarioRol();
+        if (rol_usuario) {
+            this.esAdmin = rol_usuario.trim() === 'Admin';
+        }
+    }
 
     readonly filterForm = this.fb.nonNullable.group({
         criterio: ['termino'],
