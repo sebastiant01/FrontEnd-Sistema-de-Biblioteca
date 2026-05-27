@@ -17,6 +17,8 @@ import { filter } from 'rxjs/operators';
 import { SancionService } from '../../core/services/sancion.service';
 import { SancionRead } from '../../models/sancion.models';
 import { SancionDialogComponent, SancionDialogData } from './sancion-dialog';
+import { AuditContextService } from '../../core/audit-context.service';
+
 
 @Component({
   selector: 'app-sancion-list',
@@ -43,6 +45,20 @@ export class SancionListComponent implements AfterViewInit {
   private readonly dialog = inject(MatDialog);
   private readonly snack = inject(MatSnackBar);
   private readonly fb = inject(FormBuilder);
+  private readonly auditService = inject(AuditContextService);
+
+    esAdmin: boolean = false;
+
+    ngOnInit() {
+        this.verificarRol();
+    }
+
+    verificarRol(): void {
+        const rol_usuario = this.auditService.usuarioRol();
+        if (rol_usuario) {
+            this.esAdmin = rol_usuario.trim() === 'Admin';
+        }
+    }
 
   readonly displayedColumns = [
     'fecha_inicio',
