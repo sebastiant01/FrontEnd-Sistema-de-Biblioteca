@@ -17,6 +17,8 @@ import { filter } from 'rxjs/operators';
 import { RevistaService } from '../../core/services/revista.service';
 import { RevistaRead } from '../../models/revista.models';
 import { RevistaDialogComponent, RevistaDialogData } from './revista-dialog';
+import { AuditContextService } from '../../core/audit-context.service';
+
 
 @Component({
   selector: 'app-revista-list',
@@ -43,6 +45,20 @@ export class RevistaListComponent implements AfterViewInit {
   private readonly dialog = inject(MatDialog);
   private readonly snack = inject(MatSnackBar);
   private readonly fb = inject(FormBuilder);
+  private readonly auditService = inject(AuditContextService);
+
+    esAdmin: boolean = false;
+
+    ngOnInit() {
+        this.verificarRol();
+    }
+
+    verificarRol(): void {
+        const rol_usuario = this.auditService.usuarioRol();
+        if (rol_usuario) {
+            this.esAdmin = rol_usuario.trim() === 'Admin';
+        }
+    }
 
   readonly displayedColumns = [
     'codigo_material',

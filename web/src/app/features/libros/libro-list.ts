@@ -20,6 +20,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatInputModule } from '@angular/material/input';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { AuditContextService } from '../../core/audit-context.service';
 
 @Component({
     selector: 'app-libro-list',
@@ -48,6 +49,20 @@ export class LibroListComponent implements AfterViewInit {
     private readonly dialog = inject(MatDialog);
     private readonly snack = inject(MatSnackBar);
     private readonly fb = inject(FormBuilder);
+    private readonly auditService = inject(AuditContextService);
+
+    esAdmin: boolean = false;
+
+    ngOnInit() {
+        this.verificarRol();
+    }
+
+    verificarRol(): void {
+        const rol_usuario = this.auditService.usuarioRol();
+        if (rol_usuario) {
+            this.esAdmin = rol_usuario.trim() === 'Admin';
+        }
+    }
 
     protected readonly formatId = shortId;
 
