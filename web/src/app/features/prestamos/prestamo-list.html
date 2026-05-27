@@ -1,9 +1,11 @@
 <div class="page-head">
   <h1>Préstamos</h1>
+@if (esAdmin){
   <button mat-flat-button color="primary" type="button" (click)="nuevo()">
     <mat-icon>add</mat-icon>
     Nuevo
   </button>
+}
 </div>
 
 <form [formGroup]="filterForm" (ngSubmit)="buscar()" class="smart-search-bar mat-elevation-z2">
@@ -77,12 +79,14 @@
       <ng-container matColumnDef="acciones">
         <th mat-header-cell *matHeaderCellDef></th>
         <td mat-cell *matCellDef="let r" class="actions">
+        @if (esAdmin) {
           <button mat-icon-button type="button" (click)="editar(r)" aria-label="Editar">
             <mat-icon>edit</mat-icon>
           </button>
           <button mat-icon-button type="button" (click)="eliminar(r)" aria-label="Eliminar">
             <mat-icon>delete</mat-icon>
           </button>
+        }
         </td>
       </ng-container>
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
