@@ -6,7 +6,7 @@ Aplicación web desarrollada con **Angular** como interfaz de usuario para el si
 
 ## 🎬 Video demostrativo
 
-> 📹 **[[Video demostrativo FrontEnd](https://drive.google.com/file/d/14ppRCVX9M-suwLZJERHxEmu3tUg3o7r9/view?usp=sharing)]**
+> 📹 **[[Video Demostrativo Despliegue del Front-End](https://drive.google.com/file/d/1VxZSQ4QL_ATbEoJY2MNw2J6y4ZL87Upi/view?usp=sharing)]**
 
 ---
 
